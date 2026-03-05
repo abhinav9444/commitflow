@@ -19,6 +19,21 @@ else:
 
 
 # -----------------------------
+# Read version from package
+# -----------------------------
+
+def get_version():
+
+    version_file = Path("daily_git_assistant/__init__.py").read_text()
+
+    for line in version_file.splitlines():
+
+        if line.startswith("__version__"):
+
+            return line.split("=")[1].strip().strip('"').strip("'")
+
+
+# -----------------------------
 # Add Scripts folder to PATH
 # -----------------------------
 
@@ -62,7 +77,7 @@ setup(
 
     name="commitflow",
 
-    version="1.0.2",   # version bumped for PyPI update
+    version=get_version(),
 
     description="CLI tool for maintaining consistent Git commits automatically",
 
