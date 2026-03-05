@@ -62,7 +62,7 @@ setup(
 
     name="commitflow",
 
-    version="1.0.0",
+    version="1.0.1",   # version bumped for PyPI update
 
     description="CLI tool for maintaining consistent Git commits automatically",
 
@@ -71,6 +71,12 @@ setup(
     long_description_content_type="text/markdown",
 
     author="Abhinav Kumar Singh",
+
+    author_email="abhinavksinghofc@gmail.com",
+
+    url="https://github.com/abhinav9444/commitflow",
+
+    license="MIT",
 
     packages=find_packages(),
 
@@ -85,5 +91,19 @@ setup(
     },
 
     python_requires=">=3.8",
+
+    project_urls={
+        "Source": "https://github.com/abhinav9444/commitflow",
+        "Issues": "https://github.com/abhinav9444/commitflow/issues",
+    },
+
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Version Control :: Git",
+    ],
 
 )
