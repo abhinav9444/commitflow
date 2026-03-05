@@ -1,79 +1,89 @@
 from setuptools import setup, find_packages
-from setuptools.command.install import install
-import os
+from pathlib import Path
+import site
 import sys
+import os
 
-class PostInstallCommand(install):
 
-    def run(self):
-        install.run(self)
-        self.add_scripts_to_path()
+# -----------------------------
+# Read README for PyPI
+# -----------------------------
 
-    def add_scripts_to_path(self):
+this_directory = Path(__file__).parent
+readme_path = this_directory / "README.md"
+
+if readme_path.exists():
+    long_description = readme_path.read_text(encoding="utf-8")
+else:
+    long_description = ""
+
+
+# -----------------------------
+# Add Scripts folder to PATH
+# -----------------------------
+
+def add_scripts_to_path():
+
+    try:
+
+        user_base = site.USER_BASE
+        scripts_path = os.path.join(user_base, "Scripts")
 
         if os.name != "nt":
-            return
+            scripts_path = os.path.join(user_base, "bin")
 
-        try:
-            import winreg
+        path_env = os.environ.get("PATH", "")
 
-            scripts_path = os.path.join(
-                os.path.expanduser("~"),
-                "AppData",
-                "Roaming",
-                "Python",
-                f"Python{sys.version_info.major}{sys.version_info.minor}",
-                "Scripts"
-            )
+        if scripts_path not in path_env:
 
-            key = winreg.OpenKey(
-                winreg.HKEY_CURRENT_USER,
-                r"Environment",
-                0,
-                winreg.KEY_ALL_ACCESS
-            )
+            if os.name == "nt":
 
-            current_path, _ = winreg.QueryValueEx(key, "PATH")
+                os.system(f'setx PATH "%PATH%;{scripts_path}"')
 
-            if scripts_path.lower() in current_path.lower():
-                print("[CommitFlow] Scripts path already in PATH")
-                return
+            else:
 
-            new_path = current_path + ";" + scripts_path
+                shell_profile = os.path.expanduser("~/.bashrc")
 
-            winreg.SetValueEx(
-                key,
-                "PATH",
-                0,
-                winreg.REG_EXPAND_SZ,
-                new_path
-            )
+                with open(shell_profile, "a") as f:
+                    f.write(f'\nexport PATH="$PATH:{scripts_path}"\n')
 
-            winreg.CloseKey(key)
+    except Exception:
+        pass
 
-            print("\n[CommitFlow] PATH updated automatically.")
-            print("[CommitFlow] Restart terminal to use 'commitflow' command.\n")
 
-        except Exception as e:
-            print("\n[CommitFlow] Could not modify PATH automatically.")
-            print(e)
+add_scripts_to_path()
 
+
+# -----------------------------
+# Setup configuration
+# -----------------------------
 
 setup(
+
     name="commitflow",
+
     version="1.0.0",
-    description="Daily Git commit assistant for developers",
-    author="Abhinav Kr Singh",
+
+    description="CLI tool for maintaining consistent Git commits automatically",
+
+    long_description=long_description,
+
+    long_description_content_type="text/markdown",
+
+    author="Abhinav Kumar Singh",
+
     packages=find_packages(),
+
     install_requires=[
         "colorama"
     ],
+
     entry_points={
         "console_scripts": [
             "commitflow=daily_git_assistant.main:main"
         ]
     },
-    cmdclass={
-        "install": PostInstallCommand
-    }
+
+    python_requires=">=3.8",
+
 )
