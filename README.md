@@ -1,7 +1,7 @@
 # CommitFlow
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![License](https://img.shields.io/github/license/abhinav9444/commitflow)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Build](https://github.com/abhinav9444/commitflow/actions/workflows/tests.yml/badge.svg)
 ![Tests](https://img.shields.io/github/actions/workflow/status/abhinav9444/commitflow/tests.yml)
 ![PyPI](https://img.shields.io/pypi/v/commitflow)
