@@ -62,7 +62,7 @@ setup(
 
     name="commitflow",
 
-    version="1.0.1",   # version bumped for PyPI update
+    version="1.0.2",   # version bumped for PyPI update
 
     description="CLI tool for maintaining consistent Git commits automatically",
 
